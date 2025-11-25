@@ -8,7 +8,6 @@ public class PersonalFinanceTrackerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PersonalFinanceTrackerApplication.class, args);
-
 	}
 
 }
