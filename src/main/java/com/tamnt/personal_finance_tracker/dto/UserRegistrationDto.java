@@ -1,32 +1,18 @@
-package com.tamnt.personal_finance_tracker.model;
+package com.tamnt.personal_finance_tracker.dto;
 
-import jakarta.persistence.*;
+public class UserRegistrationDto {
 
-@Entity
-@Table(name = "users")
-public class User extends BaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(unique = true, nullable = false)
     private String userName;
-
-    @Column(nullable = false)
     private String password;
-
     private String email;
 
-    public User() {
+    public UserRegistrationDto() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public UserRegistrationDto(String userName, String password, String email) {
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
     }
 
     public String getUserName() {
