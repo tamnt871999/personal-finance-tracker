@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "categories")
-public class Category {
+public class Category extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,8 @@ public class Category {
     @Column(nullable = false)
     private int type;
 
-    public Category() {}
+    public Category() {
+    }
 
     public Long getId() {
         return id;
