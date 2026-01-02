@@ -38,7 +38,7 @@ public class SecurityConfig {
 
         // 1. Cấu hình phân quyền API:
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/auth/register", "/api/auth/login").permitAll() // CHO PHÉP Đăng ký/Đăng nhập
+                .requestMatchers("/api/auth/**").permitAll() // CHO PHÉP Đăng ký/Đăng nhập
                 .anyRequest().authenticated() // CÁC API KHÁC PHẢI XÁC THỰC
         );
 
