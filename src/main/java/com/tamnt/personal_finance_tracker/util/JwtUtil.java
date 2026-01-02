@@ -1,12 +1,13 @@
 package com.tamnt.personal_finance_tracker.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
+import java.util.function.Function;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,4 +42,34 @@ public class JwtUtil {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
+    public String extractUserName(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    public Boolean validateToken(String token,String userName) {
+        final String extractedUserName = extractUserName(token);
+        return (extractedUserName.equals(userName) && !isTokenExpired(token));
+    }
+
+    private <T> T extractClaim(String token, Function<Claims,T> claimsReslover) {
+        final Claims claims = extractAllClaims(token);
+        return claimsReslover.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    private Boolean isTokenExpired(String token) {
+        return extractClaim(token, Claims::getExpiration).before(new Date());
+    }
+
+
+
+
 }
