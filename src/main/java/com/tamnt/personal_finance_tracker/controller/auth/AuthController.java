@@ -4,6 +4,7 @@ import com.tamnt.personal_finance_tracker.dto.LoginDto;
 import com.tamnt.personal_finance_tracker.dto.UserRegistrationDto;
 import com.tamnt.personal_finance_tracker.service.UserService;
 import com.tamnt.personal_finance_tracker.util.JwtUtil;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,11 +30,11 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDto userRegistrationDto) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
 
         try {
             userService.registerNewUser(userRegistrationDto);
-            return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
 
         } catch (IllegalStateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -47,7 +48,7 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(loginDto.getUserName(), loginDto.getPassword())
         );
 
-        String token = jwtUtil.generateToken(loginDto.getUserName());
+        String token = jwtUtil.generateToken(authentication.getName());
 
         return ResponseEntity.ok(token);
     }

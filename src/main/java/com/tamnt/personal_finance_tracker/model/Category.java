@@ -17,6 +17,11 @@ public class Category extends BaseEntity {
     @Column(nullable = false)
     private int type;
 
+    public Category(String name, int type) {
+        this.name = name;
+        this.type = type;
+    }
+
     public Category() {
     }
 
